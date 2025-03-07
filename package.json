@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "start": "node dist/server.js",
+    "build": "npm run test:ci && npx tsc",
+    "dev": "tsx --watch --env-file=.env src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.9",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongodb": "^6.14.2"
+  }
+}
