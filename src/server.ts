@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import path from "path";
 import { fileURLToPath } from "url";
 import mongodb from "./database/index.mts";
@@ -14,6 +15,9 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true })); // to parse the incoming requests with URL parameters
 app.use(express.json()); // To parse the incoming requests with JSON payloads
+
+// Enable CORS
+app.use(cors());
 
 // load all our routes. See routes/index.ts for more info
 app.use("/", baseRoutes);
