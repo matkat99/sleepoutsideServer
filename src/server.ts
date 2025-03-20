@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import mongodb from "./database/index.mts";
 import baseRoutes from "./routes/index.ts";
+import { globalErrorHandler } from "./middleware/error-handlers.mts";
 
 // Because we are using ESModules instead of CommonJS modules these two expected variables will not get set. We can build them manually to avoid any problems later
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +19,8 @@ app.use(express.json()); // To parse the incoming requests with JSON payloads
 // load all our routes. See routes/index.ts for more info
 app.use("/", baseRoutes);
 
+// load error handler middleware
+app.use(globalErrorHandler);
 // Initialize the database connection, we pass a callback into the function to handle any errors that may occur during the connection process.
 mongodb.initDb((err:Error) => {
   if (err) {
