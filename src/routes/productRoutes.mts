@@ -1,10 +1,10 @@
-import {Router } from "express";
+import {Router, Request, Response} from "express";
 import { getAllProducts, getProductById } from "../models/productModel.mts";
 import EntityNotFoundError from "../errors/EntityNotFoundError.mts";
 const router: Router = Router();
 
 // GET /products/
-router.get("/", async (req, res, next) => {
+router.get("/", async (req:Request, res:Response) => {
   console.log(req.headers, req.body);
   const products = await getAllProducts();
   if (!products?.length) {
@@ -18,35 +18,19 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET /products/:id
-router.get("/:id", async (req, res) => {
-  try {
+router.get("/:id", async (req:Request, res:Response) => {
+  
     const {id} = req.params;
+    if (!id)  {
+      throw new EntityNotFoundError({message : 'Id required',code: 'ERR_VALID', statusCode : 400})
+    }
     const product = await getProductById(id);
     if (!product) {
-      res.status(404).json({error:'Product not found'});
+      throw new EntityNotFoundError({message : `Product ${id} Not Found`,code: 'ERR_NF',
+        statusCode : 404})
     }
-    res.setHeader('Content-Type', 'application/json');
     res.status(200).json(product);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// GET /products/:id
-router.get("/:id", async (req, res) => {
-  try {
-    const {id} = req.params;
-    const product = await getProductById(id);
-    if (!product) {
-      res.status(404).json({error:'Product not found'});
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(product);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  
 });
 
 export default router; // Export the router to use it in the main file

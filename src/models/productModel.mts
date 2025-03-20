@@ -8,14 +8,8 @@ export async function getAllProducts(): Promise<Product[] | null> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  try {
     const product = await mongodb.getDb().collection<Product>("products").findOne({Id: id});
-    if (!product) throw new Error(`Product with ID ${id} not found`);
     return product;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
 }
 
 
