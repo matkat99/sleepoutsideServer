@@ -28,13 +28,42 @@ const init = async () => {
     await client.close();
   }
 };
-
+const lowerCaseKeys = function (obj) {
+  // if it is an object, but NOT an array, then we need to iterate through all of its keys
+  if (typeof obj === "object" && !Array.isArray(obj)) {
+    for (let key in obj) {
+      // take the first letter (key[0]) of the key and make it lowercase
+      // then add that to the rest of the key after REMOVING the first letter (key.slice(1))
+      let newKey = key[0].toLowerCase() + key.slice(1);
+      // if the value of this key is an object, then we need to call this function again
+      if (typeof obj[key] === "object") {
+        obj[newKey] = lowerCaseKeys(obj[key]);
+        delete obj[key];
+      } else {
+        obj[newKey] = obj[key];
+        delete obj[key];
+      }
+    }
+  } else if (Array.isArray(obj)) {
+    // if it is an array, then we need to iterate through each item in the array
+    // and for each object value call the function again.
+    for (let i = 0; i < obj.length; i++) {
+      let item = obj[i];
+      if (typeof item === "object") {
+        obj[i] = lowerCaseKeys(item);
+      }
+    }
+  }
+  return obj;
+};
 const seedProducts = async (db) => {
   // we need to make a small transform to the provided data before inserting
   // use .map() to transform each product before inserting it into the database
   // change Reviews.ReviewUrl to match the following pattern: /products/<productId>/reviews/
+  // while we are at it...the data provided used a PascalCase naming convention for its keys. Use the provided lowerCaseKeys function to convert all keys to camelCase. This will make it consistent with the rest of our models.
   const newProducts = products.map((product) => {
     product.Reviews.ReviewsUrl = `/products/${product.Id}/reviews/`;
+    product = lowerCaseKeys(product);
     return product;
   });
   try {
