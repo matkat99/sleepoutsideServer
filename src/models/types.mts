@@ -1,52 +1,49 @@
 export interface Product {
-    _id: string;
-    Id: string;
-    IsClearance: boolean;
-    Category: string;
-    IsNew: boolean;
-    Url: string;
-    Reviews: {
-      ReviewsUrl: string;
-      ReviewCount: number;
-      AverageRating: number;
-    };
-    NameWithoutBrand: string;
-    Name: string;
-    Images: {
-      PrimarySmall: string;
-      PrimaryMedium: string;
-      PrimaryLarge: string;
-      PrimaryExtraLarge: string;
-      ExtraImages: {
-        Title: string;
-        Src: string;
-      }[];
-    };
-    SizesAvailable: {
-      ZIPPER: string[];
-    };
-    Colors: Color[];
-    DescriptionHtmlSimple: string;
-    SuggestedRetailPrice: number;
-    Brand: Brand;
-    ListPrice: number;
-    FinalPrice: number;
-  }
-  export interface Color {
-    ColorCode: string;
-      ColorName: string;
-      ColorChipImageSrc: string;
-      ColorPreviewImageSrc: string;
-  }
-  
-  export interface Brand {
-    Id: string;
-      Url: string;
-      ProductsUrl: string;
-      LogoSrc: string;
-      Name: string;
-  }
+  _id: string;
+  id: string;
+  isClearance: boolean;
+  category: string;
+  isNew: boolean;
+  url: string;
+  reviews: {
+    reviewsUrl: string;
+    reviewCount: number;
+    averageRating: number;
+  };
+  nameWithoutBrand: string;
+  name: string;
+  images: {
+    primarySmall: string;
+    primaryMedium: string;
+    primaryLarge: string;
+    primaryExtraLarge: string;
+    extraImages: {
+      title: string;
+      src: string;
+    }[];
+  };
+  sizesAvailable: {
+    zipper: string[];
+  };
+  colors: Color[];
+  descriptionHtmlSimple: string;
+  suggestedRetailPrice: number;
+  brand: Brand;
+  listPrice: number;
+  finalPrice: number;
+}
 
+export interface Color {
+  colorCode: string;
+  colorName: string;
+  colorChipImageSrc: string;
+  colorPreviewImageSrc: string;
+}
 
-
-
+export interface Brand {
+  id: string;
+  url: string;
+  productsUrl: string;
+  logoSrc: string;
+  name: string;
+}
