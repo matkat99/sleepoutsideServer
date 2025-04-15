@@ -1,6 +1,7 @@
 // import MongoClient and ServerApiVersion from the mongodb library and import products from the products.js file.
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { products } from "./products.js";
+import * as argon2 from "argon2";
 
 //build the uri for our connection string
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URI}`;
@@ -19,6 +20,18 @@ const init = async () => {
     console.log(`Connected to MongoDB`);
     // get a reference to the actual database we will be using with .db(<database name>)
     const db = client.db(process.env.MONGO_DATABASE);
+
+    // drop collections
+
+    await db.collection("alerts").drop();
+    await db.collection("orders").drop();
+
+    // re-create collections
+    await db.createCollection("alerts");
+    await db.createCollection("orders");
+
+    //initialize the Users collection
+    await seedUsers(db);
 
     // initialize the Products collection
     await seedProducts(db);
@@ -76,9 +89,39 @@ const seedProducts = async (db) => {
     // insert all products
     const result = await db.collection("products").insertMany(newProducts);
     console.log(
-      `${result.insertedCount} new listing(s) created with the following id(s):`
+      `${result.insertedCount} new product(s) created with the following id(s):`
     );
     console.log(result.insertedIds);
+    //create some indexes on the following fields: id, name, category, and brand
+    await db.collection("products").createIndex({ id: 1 });
+    await db.collection("products").createIndex({ name: 1 });
+    await db.collection("products").createIndex({ category: 1 });
+    await db.collection("products").createIndex({ brand: 1 });
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+const seedUsers = async (db) => {
+  //drop and recreate the users collection
+  await db.collection("users").drop();
+  await db.createCollection("users");
+  // add indexes on email and name fields
+  await db.collection("users").createIndex({ email: 1 });
+  await db.collection("users").createIndex({ name: 1 });
+
+  // add a new user to the database
+  const user = {
+    email: "test@test.com",
+    password: await argon2.hash("password"),
+    name: "Test User",
+    createdAt: new Date(),
+    modifiedAt: new Date()
+  };
+  try {
+    // insert the user
+    const result = await db.collection("users").insertOne(user);
+    console.log(`New user created with the following id: ${result.insertedId}`);
   } catch (error) {
     console.error(error.message);
   }
