@@ -2,7 +2,7 @@ import type {Request, Response} from "express";
 import {Router} from "express";
 import { getAllProducts, getProductById } from "../models/productModel.mts";
 import EntityNotFoundError from "../errors/EntityNotFoundError.mts";
-import authenticate from "../middleware/authenticate.mts";
+
 const router: Router = Router();
 
 // GET /products/
