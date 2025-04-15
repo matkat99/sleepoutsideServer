@@ -30,7 +30,7 @@ export const globalErrorHandler = (err: unknown, req:Request, res:Response, next
      */
     if (res.headersSent) {
         // console.log(`Attempted to render again for: ${req.url}`);
-        // next(err);
+        //next(err);
         return;
     }
    // what is a CustomError? Go check out errors/CustomError.mts for more info.
