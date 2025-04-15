@@ -3,7 +3,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import { products } from "./products.js";
 
 //build the uri for our connection string
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URI}`;
+const uri = process.env.MONGO_URI || "";
 console.log(uri);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
