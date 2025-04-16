@@ -9,7 +9,7 @@ const router: Router = Router();
 router.get("/",  async (req:Request, res:Response) => {
   console.log(req.query);
   const products = await getAllProducts(req.query);
-  if (!products?.length) {
+  if (products.count <= 0) {
     // This is an example you can refer to about how to handle errors in our routes
     // If you check the middleware folder you will see a general error handler that will get called automatically when we throw like this
    throw new EntityNotFoundError({message : 'Products Not Found',code: 'ERR_NF',

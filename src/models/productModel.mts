@@ -1,5 +1,7 @@
 import mongodb from "../database/index.mts";
 import type {Product} from "./types.mts";
+import { buildPaginationWrapper, formatFields } from "../services/utils.mts";
+import type { Collection } from "mongodb";
 
 interface Find {
     name?:string,
@@ -7,12 +9,14 @@ interface Find {
     category?:string,
 }
 
-export async function getAllProducts(query:Record<string, any>): Promise<Product[] | null> {
+export async function getAllProducts(query:Record<string, any>): Promise<{count: number, next: string |null, prev: string |null, results: Product[] | null}> {
     let find:Find = {}
     const {q, category, fields} = query; 
     const limit = parseInt(query.limit) || 20;
     const offset = parseInt(query.offset) || 0;
-    let fieldFilters = formatFields();
+    let fieldFilters = formatFields(fields);
+    const productsCollection:Collection<Product> = mongodb.getDb().collection<Product>('products');
+    // check to see if we need to filter on category or name   
     if(category) {
         find.category = category;
     }
@@ -20,29 +24,20 @@ export async function getAllProducts(query:Record<string, any>): Promise<Product
         find.name = q;
         find.descriptionHtmlSimple = q;
     }
-    function formatFields() {
-        const fieldsArr = fields?.split(",");
-        if(fieldsArr) {
-            const filter = fieldsArr
-            .map((field:string) => field.trim())
-            .reduce((acc: Record<string, any>, current:string) => ({ ...acc, [current]: 1 }), {});
-            // a longer form of doing this conversion
-            // let filter: Record<string, any> = {};
-            // if(fieldsArr) {
-            //     fieldsArr.forEach((field:string) => {
-            //      filter[field.trim()] = 1
-            //     })      
-            // };
-            return filter
-        }
-    }
+    
     console.log("find:",find)
-    const cursor = await mongodb.getDb().collection<Product>("products").find(find).skip(offset).limit(limit);
+      // get the total number of records matching our query
+      const totalCount = await productsCollection.countDocuments(find);
+    const cursor = await productsCollection.find(find).skip(offset).limit(limit);
     if(fieldFilters) {
         cursor.project(fieldFilters);
     }
-    const data = await cursor.toArray();
-    return data ;
+        // finally convert the result to an array that we can consume
+        const result = await cursor.toArray();
+        // build our pagination links
+        const wrapper = buildPaginationWrapper(totalCount, query);
+        wrapper.results = result as Product[];
+        return wrapper
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
