@@ -1,3 +1,17 @@
+import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongodb';
+// Define constants for secret key and token expiration time
+const SECRET_KEY = process.env.JWT_SECRET_KEY || 'your-secret-key';
+const TOKEN_EXPIRATION_TIME = process.env.JWT_EXPIRES_IN || '10m' as any; // 600 seconds = 10 minutes
+
+// Define a function to generate JWT tokens
+export function generateToken(user: {userId:ObjectId, email:string}) {
+   
+  const token = jwt.sign(user, SECRET_KEY, { expiresIn: TOKEN_EXPIRATION_TIME });
+  return token;
+}
+
+
 export function formatFields(fields:string) {
     const fieldsArr = fields?.split(",");
     if(fieldsArr) {
