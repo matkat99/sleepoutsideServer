@@ -56,9 +56,9 @@ export interface User {
     email: string;
     password: string;
   name: string;
-  address: Address;
-  phoneNumbers: PhoneNumber[];
-  cart: CartItem[];
+  address?: Address;
+  phoneNumbers?: PhoneNumber[];
+  cart?: CartItem[];
   createdAt: Date;
   updatedAt: Date;
 }
