@@ -280,6 +280,93 @@
             "type": "string",
             "format": "date-time"
           },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 100,
+                "description": "The street address of the user, must not be blank and must be at least ten characters long and no more than one hundred characters long"
+              },
+              "city": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 50,
+                "description": "The city of the user, must not be blank and must be at least five characters long and no more than fifty characters long"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "AL",
+                  "AK",
+                  "AZ",
+                  "AR",
+                  "CA",
+                  "CO",
+                  "CT",
+                  "DE",
+                  "DC",
+                  "FL",
+                  "GA",
+                  "HI",
+                  "ID",
+                  "IL",
+                  "IN",
+                  "IA",
+                  "KS",
+                  "KY",
+                  "LA",
+                  "ME",
+                  "MD",
+                  "MA",
+                  "MI",
+                  "MN",
+                  "MS",
+                  "MO",
+                  "MT",
+                  "NE",
+                  "NV",
+                  "NH",
+                  "NJ",
+                  "NM",
+                  "NY",
+                  "NC",
+                  "ND",
+                  "OH",
+                  "OK",
+                  "OR",
+                  "PA",
+                  "RI",
+                  "SC",
+                  "SD",
+                  "TN",
+                  "TX",
+                  "UT",
+                  "VT",
+                  "VA",
+                  "WA",
+                  "WV",
+                  "WI",
+                  "WY"
+                ],
+                "description": "The state of the user, must not be blank and must be one a valid 2 character state abbreviation"
+              },
+              "zipCode": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 10,
+                "pattern": "^\\d{5}(-\\d{4})?$",
+                "description": "The zip code of the user, must not be blank and must be a valid zip code"
+              },
+              "country": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 30,
+                "pattern": "^\\w+$",
+                "description": "The country of the user, must not be blank and must be a valid country"
+              }
+            }},
           "items": {
             "type": "array",
             "items": {
