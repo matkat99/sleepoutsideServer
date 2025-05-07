@@ -88,8 +88,9 @@ export interface Address {
 };
 
   export interface Order {
-    _id: string;
+    _id: ObjectId;
     userId: string;
+    name: string;
     totalAmount: number;
     status: "pending" | "processing" | "shipped" | "delivered";
     paymentMethod: string;
@@ -103,7 +104,7 @@ export interface Address {
   }
 
   export interface Alert {
-    _id: string;
+    _id: ObjectId;
     title: string;
     type: 'promotion' | 'info' | 'warning';
     status: 'active' | 'inactive';
