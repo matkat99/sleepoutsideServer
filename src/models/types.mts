@@ -93,7 +93,9 @@ export interface Address {
     name: string;
     totalAmount: number;
     status: "pending" | "processing" | "shipped" | "delivered";
-    paymentMethod: string;
+    cardNumber: string;
+    cardExpiration: string;
+    cardCode: number;
     shippingAddress: Address;
     orderItems: CartItem[];
     createdAt: Date;

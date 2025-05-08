@@ -292,17 +292,17 @@ export const OrderSchema = {
       properties: {
         street: {
           type: "string",
-          minLength: 10,
+          minLength: 5,
           maxLength: 100,
           description:
-            "The street address of the user, must not be blank and must be at least ten characters long and no more than one hundred characters long"
+            "The street address of the user, must not be blank and must be at least five characters long and no more than one hundred characters long"
         },
         city: {
           type: "string",
-          minLength: 5,
+          minLength: 3,
           maxLength: 50,
           description:
-            "The city of the user, must not be blank and must be at least five characters long and no more than fifty characters long"
+            "The city of the user, must not be blank and must be at least three characters long and no more than fifty characters long"
         },
         state: {
           type: "string",
