@@ -7,7 +7,7 @@ export async function getAllProducts(): Promise<Product[] | null> {
     return data ;
 }
 
-
-
-
-
+export async function getProductById(id: string): Promise<Product | null> {
+    const product = await mongodb.getDb().collection<Product>("products").findOne({id: id});
+    return product;
+}
