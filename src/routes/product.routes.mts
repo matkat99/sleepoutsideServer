@@ -22,16 +22,16 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET /products/:id
-router.get("/:id", async (req:Request, res:Response) => {
+router.get("/:id", async (req, res, next) => {
   
     const {id} = req.params;
     if (!id)  {
-      throw new EntityNotFoundError({message : 'Id required',code: 'ERR_VALID', statusCode : 400})
+      return next(new EntityNotFoundError({message : 'Id required',code: 'ERR_VALID', statusCode : 400}))
     }
-    const product = await getProductById(id);
+    const product = await productService.getProductById(id);
     if (!product) {
-      throw new EntityNotFoundError({message : `Product ${id} Not Found`,code: 'ERR_NF',
-        statusCode : 404})
+      return next(new EntityNotFoundError({message : `Product ${id} Not Found`,code: 'ERR_NF',
+        statusCode : 404}))
     }
     res.status(200).json(product);
   
