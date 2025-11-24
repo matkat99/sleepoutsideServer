@@ -1,3 +1,5 @@
+import type { QueryParams } from "../models/types.mts";
+
 export function formatFields(fields:string) {
     const fieldsArr = fields?.split(",");
     if(fieldsArr) {
@@ -11,19 +13,13 @@ export function formatFields(fields:string) {
         //      filter[field.trim()] = 1
         //     })      
         // };
+        console.log("formatFields:",filter)
         return filter
     }
 }
 
-// create an generic interface for our query parameters. This will make it easier to type check and validate the data we receive from the client. If we end up using query parameters for other routes we can modify it to include other fields.
-// this works because they are all optional. But if for example a limit exists it will have to  be a string.
-export interface QueryParams {
-  category?: string;
-  q?:string;
-  limit?: string;
-  offset?: string;
-  fields?: string;
-}
+
+
 export function buildPaginationWrapper(totalCount:number, query:QueryParams) {
   // here we check to see if there is a limit...if yes convert it to a number, if no set it to the default of 20
     const limit= query.limit? parseInt(query.limit) : 20;

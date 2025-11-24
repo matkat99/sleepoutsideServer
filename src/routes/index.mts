@@ -1,6 +1,6 @@
 import { Router } from "express";
 import productRoutes from "./product.routes.mts";
-import swaggerRoutes from "./swaggerRoutes.mts";
+import swaggerRoutes from "./swagger.routes.mts";
 
 const router:Router = Router();
 
