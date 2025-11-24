@@ -38,11 +38,14 @@ export async function getAllProducts(query:QueryParams): Promise<{totalCount: nu
         return {data:results, totalCount};
 }
 
-export async function getProductById(id: string): Promise<Product | null> {
+async function getProductById(id: string): Promise<Product | null> {
     const product = await mongodb.getDb().collection<Product>("products").findOne({id: id});
     return product;
 }
 
-
+export default {
+    getAllProducts,
+    getProductById
+};
 
 

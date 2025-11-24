@@ -1,4 +1,4 @@
- import { MongoClient, ServerApiVersion } from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 const uri = process.env.MONGO_URI || "";
 // console.log(uri);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -10,7 +10,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-let _db:MongoClient;
+let _db: MongoClient | null = null;
 
 const initDb = async (callback:Function) => {
     // Check if the db is already initialized
@@ -38,7 +38,18 @@ const getDb = () => {
   return _db.db(process.env.MONGO_DATABASE);
 };
 
+const closeDb = async () => {
+  if (_db) {
+    try {
+      await _db.close();
+    } finally {
+      _db = null;
+    }
+  }
+};
+
 export default {
   initDb,
   getDb,
+  closeDb,
 };
