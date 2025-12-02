@@ -52,15 +52,15 @@ export interface Brand {
 
 
 export interface User {
-    _id: ObjectId;
+    _id?: ObjectId;
     email: string;
     password: string;
   name: string;
-  address: Address;
-  phoneNumbers: PhoneNumber[];
-  cart: CartItem[];
+  address?: Address;
+  phoneNumbers?: PhoneNumber[];
+  cart?: CartItem[];
   createdAt: Date;
-  updatedAt: Date;
+  modifiedAt: Date;
 }
  export interface CartItem {
     productId: string;

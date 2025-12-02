@@ -1,6 +1,5 @@
 import mongodb from "../database/index.mts";
 import type {Product, FindProductObj} from "./types.mts";
-import { formatFields } from "../services/utils.mts";
 import type { Collection } from "mongodb";
 
 export async function getAllProducts(find:FindProductObj) {
