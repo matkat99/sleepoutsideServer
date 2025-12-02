@@ -2,6 +2,7 @@ import {Router } from "express";
 import userService from "../services/user.service.mts";
 import EntityNotFoundError from "../errors/EntityNotFoundError.mts";
 import { sanitize } from "../services/utils.mts";
+import  authorize from "../middleware/authorize.mts"
 
 const router: Router = Router();
 
@@ -41,5 +42,10 @@ router.post("/", async (req,res,next) => {
     }
  
 })
+
+router.get('/protected', authorize, (req, res) => {
+    console.log(res.locals.user)
+  res.json({ message: `Hello, ${res.locals.user.email}!` });
+});
 
 export default router
